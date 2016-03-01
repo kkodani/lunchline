@@ -14,7 +14,7 @@ var mongooseUsername = process.env.USERNAME || config.username;
 var mongoosePassword = process.env.PASSWORD || config.password;
 
 // Connect to mongo lab account
-mongoose.connect('mongodb://'+mongooseUsername+':'+mongoosePassword+'@ds011158.mongolab.com:11158/lunchline-js')
+mongoose.connect('mongodb://'+mongooseUsername+':'+mongoosePassword+'@ds011168.mongolab.com:11168/lunchline-js')
 console.log('L19 Connected to Mongoose');
 
 // Serve static files

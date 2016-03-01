@@ -57,7 +57,6 @@ exports.getRestaurants = function(req, res) {
             }
             // ** TODO **: Rewrite condition that JSON is returned so it doesn't fail with too few results
             results.push(restaurant);
-            console.log('RESULTS LENGTH : ', results.length);
             if (results.length === 18) {
               res.json(results);
             }
@@ -65,7 +64,6 @@ exports.getRestaurants = function(req, res) {
         } else {
           results.push(obj);
           // ** TODO **: Rewrite condition that JSON is returned so it doesn't fail with too few results
-          console.log('RESULTS LENGTH : ', results.length);
 
           if (results.length === 18) {
             res.json(results);
