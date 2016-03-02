@@ -86,14 +86,23 @@ myApp
     };
   }).factory('WaitOps', function() {
 
+    moment().format();
+
     var getLatest = function(wait) {
       console.log(wait)
       var latest = wait.length-1;
       return wait[latest].waitColor;
     };
 
+    var getTimestamp = function(wait) {
+      var latest = wait.length-1;
+      var date = moment(wait[latest].timestamp);
+      return date.fromNow();
+    };
+
     return {
-      getLatest: getLatest
-    }
+      getLatest: getLatest,
+      getTimestamp: getTimestamp
+    };
   });
 

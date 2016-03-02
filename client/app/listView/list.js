@@ -1,5 +1,5 @@
 // Controller for the main home list view
-myApp.controller('listCtrl', function(distance, Data, $scope) {
+myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
   $scope.data = [];
   $scope.userLocation = {};
 
@@ -59,6 +59,14 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
         $scope.contentLoading = false;
       });
     }, function(error){console.log(error);}, geoOptions);
+  };
+
+  $scope.getLatestWait = function(wait) {
+    return WaitOps.getLatest(wait);
+  };
+
+  $scope.getTime = function(wait) {
+    return WaitOps.getTimestamp(wait);
   };
 
   // Calls Google API and adds nearby places not yet in database
