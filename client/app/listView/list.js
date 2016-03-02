@@ -28,7 +28,7 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
         lat: position.coords.latitude,
         long: position.coords.longitude
       };
-      Data.getDatabase($scope.userLocation, function(fetchedData) {
+      Data.getData($scope.userLocation, function(fetchedData) {
         for(var i = 0; i < fetchedData.length; i++) {
           var destination = {
             long: fetchedData[i].restaurant.loc[0],
@@ -52,9 +52,11 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
     }
   };
 
-  // Call main post request
+  // Call main post request to load data from database
   $scope.pullFromDatabase();
 
+  // Request to ping Google maps to search for new locations
+  // On a delay to wait for geolocation data from pullFromDatabase
   setTimeout($scope.addToDatabase, 100);
 
   // Sets default order to be ascending

@@ -8,7 +8,7 @@ if (!process.env.GOOGLEPLACESKEY) {
 
 // Function called when post request is received with lat/long
 // Makes a request to
-exports.getRestaurants = function(req, res) {
+exports.addRestaurants = function(req, res) {
   console.log('Receiving a request!', req.body);
   var lat = req.body.lat;
   var lng = req.body.long;
@@ -47,7 +47,6 @@ exports.getRestaurants = function(req, res) {
               console.log("not saved");
               throw err;
             }
-            added++;
           });
         }
       });

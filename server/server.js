@@ -23,8 +23,8 @@ app.use('/node', express.static(__dirname + '/../node_modules/'));
 app.use('/bower', express.static(__dirname + '/../bower_components/'));
 
 // Route handling
-app.post('/api/add', jsonParser, restController.getRestaurants);
-app.post('/api/retrieve', jsonParser, restController.getDatabase);
+app.post('/api/add', jsonParser, restController.addRestaurants);
+app.post('/api/get', jsonParser, restController.getDatabase);
 app.put('/api/update', jsonParser, restController.updateWait);
 
 module.exports = app;

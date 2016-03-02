@@ -10,10 +10,10 @@ myApp
       });
     };
 
-    var getDatabase = function(userLoc, callback){
+    var getData = function(userLoc, callback){
       $http({
         method: 'POST',
-        url: '/api/retrieve',
+        url: '/api/get',
         data: userLoc
       }).then(function success(data){
         var collection = data.data.map(function(restaurant) {
@@ -32,7 +32,7 @@ myApp
     var clickedItem = {};
     return {
       addData: addData,
-      getDatabase: getDatabase,
+      getData: getData,
       clickedItem: clickedItem
     }
 
