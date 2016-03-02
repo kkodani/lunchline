@@ -16,7 +16,7 @@ exports.addRestaurants = function(req, res) {
 
   // Make google places API call with lat and long
   locations.search({
-    keyword: 'restaurants',
+    type: 'restaurant',
     location: [lat, lng],
     radius: 5000
   }, function(err, response) {
