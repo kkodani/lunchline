@@ -5,6 +5,7 @@ var _ = require('underscore');
 if (!process.env.GOOGLEPLACESKEY) {
   var config = require('../config.js');
 }
+var locations = new PlaceSearch(process.env.GOOGLEPLACESKEY || config.placesKey);
 
 // Function called when post request is received with lat/long
 // Makes a request to
