@@ -98,7 +98,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
 
     var sendObj = {
       place_id: $scope.restaurant.place_id,
-      waitObj: {waitColor: waitColor, timestamp: new Date()}
+      waitObj: {waitColor: waitColor}
     };
     var geoOptions = {
       maximumAge: 60000,

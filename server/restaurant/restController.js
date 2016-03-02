@@ -92,7 +92,7 @@ exports.updateWait = function(req, res) {
   };
 
   var update = {
-    $push: {"wait": req.body.waitObj}
+    $push: {"wait": {waitColor: req.body.waitObj.waitColor, timestamp: new Date()}}
   }
 
   // Upsert updates instead of adding a new entry
