@@ -13,7 +13,7 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
    // Order variable used for the sorting order
    $scope.order = function(predicate) {
       $scope.predicate = predicate;
-      $scope.reverse = ($scope.predicate === predicate[0].wait) ? !$scope.reverse : false;
+      $scope.reverse = ($scope.predicate === predicate[0].waitColor) ? !$scope.reverse : false;
    };
 
   // Main function on page load

@@ -69,7 +69,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
     $scope.restaurant.price = dollarSigns;
 
     // Change color of main indicator div based on wait time from database
-    switch ($scope.restaurant.waitTime) {
+    switch ($scope.restaurant.waitTime[0].waitColor) {
       case '2_red':
         angular.element(document.querySelector('#currWait')).addClass('red');
         $scope.waitString = '> 30 Mins';
@@ -97,7 +97,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
     console.log("disregard error below");
     var sendObj = {
       place_id: $scope.restaurant.place_id,
-      wait: wait
+      waitObj: {waitColor: wait, timestamp: new Date()}
     };
     var geoOptions = {
       maximumAge: 60000,

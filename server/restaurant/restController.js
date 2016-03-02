@@ -92,8 +92,8 @@ exports.updateWait = function(req, res) {
   };
 
   var update = {
-    wait: req.body.wait
-  };
+    $push: {"wait": req.body.waitObj}
+  }
 
   // Upsert updates instead of adding a new entry
   var options = {

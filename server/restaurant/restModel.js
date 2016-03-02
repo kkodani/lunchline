@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var restaurantSchema = new mongoose.Schema({
   wait: [{
-    wait: String,
+    waitColor: String,
     timestamp: String
   }],
   loc: {
