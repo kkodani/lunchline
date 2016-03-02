@@ -20,6 +20,11 @@ myApp.controller('restCtrl', function($scope, Data, Update) {
   if (!Data.clickedItem.id) {
     Data.clickedItem = JSON.parse(sessionStorage.tempStorage);
   }
+  if (!Data.userLoc.lat) {
+    Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
+  }
+
+  $scope.loc = Data.userLoc;
 
   if (Data.clickedItem.id) {
     // Get data from clicked item

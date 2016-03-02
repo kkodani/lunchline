@@ -25,6 +25,8 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
             lat: position.coords.latitude,
             long: position.coords.longitude
          };
+         sessionStorage["tempStorage2"] = JSON.stringify($scope.userLocation);
+         Data.userLoc = $scope.userLocation;
          Data.getData($scope.userLocation, function(fetchedData) {
             // Make a distance property for each restaurant
             for (var i = 0; i < fetchedData.length; i++) {

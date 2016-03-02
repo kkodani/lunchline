@@ -18,11 +18,16 @@ myApp
           console.log("ERROR: ", response);
         });
     };
+    
     // Storage of clicked item on listView so that restView can pull up data
     var clickedItem = {};
+    // Storage of userLocation on listView so that restView can pull up location
+    var userLoc = {};
+
     return {
       getData: getData,
-      clickedItem: clickedItem
+      clickedItem: clickedItem,
+      userLoc: userLoc
     }
   // Distance factory: calculates the distance of a lat/long from the user's lat/long
   }).factory('distance', function() {
