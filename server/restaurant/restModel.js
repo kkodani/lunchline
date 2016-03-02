@@ -3,7 +3,10 @@ var mongoose = require('mongoose');
 
 var restaurantSchema = new mongoose.Schema({
   wait: String,
-  geometry: {location: {lat: String, lng: String}},
+  loc: {
+    type: [Number],
+    index: '2dsphere'
+  },
   id: String,
   name: String,
   photos : [{
@@ -17,6 +20,6 @@ var restaurantSchema = new mongoose.Schema({
   rating: Number,
   types : String,
   vicinity: String
-})
+});
 
-module.exports = mongoose.model('Restaurant', restaurantSchema)
+module.exports = mongoose.model('Restaurant3', restaurantSchema)

@@ -1,29 +1,41 @@
 myApp
   // Data factory: contains main post request for list of objects and storage of clicked on item
   .factory('Data', function($http) {
-    var getData = function(userLoc, callback) {
+
+    var addData = function(userLoc) {
       $http({
         method: 'POST',
-        url: '/api',
+        url: '/api/add',
         data: userLoc
-      }).then(function success(data) {
-          var collection = data.data.map(function(restaurant) {
-            return {
-              restaurant: restaurant
-            };
-          });
-          callback(collection);
-        },
-        function error(response) {
-          console.log("ERROR: ", response);
-        });
+      });
     };
+
+    var getData = function(userLoc, callback){
+      $http({
+        method: 'POST',
+        url: '/api/get',
+        data: userLoc
+      }).then(function success(data){
+        var collection = data.data.map(function(restaurant) {
+          return {
+            restaurant: restaurant
+          };
+        });
+        callback(collection);
+      },
+      function error(response) {
+        console.log("ERROR: ", response);
+      });
+    };
+
     // Storage of clicked item on listView so that restView can pull up data
     var clickedItem = {};
     return {
+      addData: addData,
       getData: getData,
       clickedItem: clickedItem
     }
+
   // Distance factory: calculates the distance of a lat/long from the user's lat/long
   }).factory('distance', function() {
     var calc = function(userLoc, destinLoc) {

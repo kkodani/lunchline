@@ -7,41 +7,33 @@ if (!process.env.GOOGLEPLACESKEY) {
 }
 
 // Function called when post request is received with lat/long
-// Makes a request to 
-exports.getRestaurants = function(req, res) {
+// Makes a request to
+exports.addRestaurants = function(req, res) {
   console.log('Receiving a request!', req.body);
   var lat = req.body.lat;
   var lng = req.body.long;
-  var results = [];
   var locations = new PlaceSearch(process.env.GOOGLEPLACESKEY || config.placesKey);
 
   // Make google places API call with lat and long
   locations.search({
-    keyword: 'food',
+    keyword: 'restaurants',
     location: [lat, lng],
     radius: 5000
   }, function(err, response) {
     if (err) {
       throw err;
     }
-
     // Loop through each of the response results and check if restaurant is in database
     // If not, put it in the database and initiate it to grey
-    // If so, push it to results array
-    // Once results are full, return JSON to client
     _.each(response.results, function(item) {
       Restaurant.findOne({
         id: item.id
       }, function(err, obj) {
         if (obj === null) {
+          var geo = [item.geometry.location.lng, item.geometry.location.lat];
           var restaurant = new Restaurant({
             wait: "3_grey",
-            geometry: {
-              location: {
-                lat: item.geometry.location.lat,
-                lng: item.geometry.location.lng
-              }
-            },
+            loc: geo,
             id: item.id,
             name: item.name,
             place_id: item.place_id,
@@ -55,24 +47,32 @@ exports.getRestaurants = function(req, res) {
               console.log("not saved");
               throw err;
             }
-            // ** TODO **: Rewrite condition that JSON is returned so it doesn't fail with too few results
-            results.push(restaurant);
-            console.log('RESULTS LENGTH : ', results.length);
-            if (results.length === 18) {
-              res.json(results);
-            }
           });
-        } else {
-          results.push(obj);
-          // ** TODO **: Rewrite condition that JSON is returned so it doesn't fail with too few results
-          console.log('RESULTS LENGTH : ', results.length);
-
-          if (results.length === 18) {
-            res.json(results);
-          }
         }
       });
-    });
+    })
+    res.send();
+  });
+};
+
+exports.getDatabase = function(req, res) {
+  var coords = [];
+  coords[0] = req.body.long;
+  coords[1] = req.body.lat;
+  var maxRadius = 5;
+  // convert to radians
+  var maxDistance = maxRadius/6371;
+
+  Restaurant.find({'loc': {
+    $geoWithin: {
+      $centerSphere: [coords, maxDistance]
+    }
+  }}, function(err, results) {
+    if(err){
+      console.log(err);
+      throw err;
+    }
+    res.json(results);
   });
 };
 
