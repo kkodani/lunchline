@@ -69,14 +69,13 @@ myApp
   // Update factory : updates the database on a reported restaurant wait time with put request
   }).factory('Update', function($http) {
 
-    function updateWait(objToSend) {
+    function updateWait(objToSend, callback) {
       $http({
         method: 'PUT',
         url: '/api/update',
         data: objToSend
       }).then(function successCallback(response) {
-        // console.log('PUT: Sent ' + JSON.stringify(objToSend) + ' successfully');
-        // console.log('Response from server is : ', response);
+        callback(response.data);
       }, function errorCallback(response) {
         console.log('ERROR on Put Request!');
       });
@@ -85,4 +84,15 @@ myApp
     return {
       updateWait: updateWait
     };
+  }).factory('WaitOps', function() {
+
+    var getLatest = function(wait) {
+      var latest = wait.length-1;
+      return wait[latest].waitColor;
+    };
+
+    return {
+      getLatest: getLatest
+    }
   });
+

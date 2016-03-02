@@ -88,7 +88,7 @@ exports.getDatabase = function(req, res) {
 // Function that updates the wait time/color in the database
 exports.updateWait = function(req, res) {
   var query = {
-    place_id: req.body.place_id
+    place_id: req.body.place_id,
   };
 
   var update = {
@@ -97,7 +97,8 @@ exports.updateWait = function(req, res) {
 
   // Upsert updates instead of adding a new entry
   var options = {
-    upsert: true
+    upsert: true,
+    new: true
   };
 
   Restaurant.findOneAndUpdate(query, update, options, function(err, restaurant) {

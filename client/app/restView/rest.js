@@ -1,6 +1,6 @@
 /* Handles controller code for main restaurant info */
 
-myApp.controller('restCtrl', function($scope, distance, Data, Update) {
+myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
 
   $scope.restaurant = {
     id: '',
@@ -12,7 +12,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
     price: 0,
     address: '',
     hours: '',
-    waitTime: ''
+    waitArr: ''
   };
 
   // Check if object doesn't exist, use session storage.
@@ -38,9 +38,10 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
 
     $scope.restaurant.category = capitalizedType;
     $scope.restaurant.address = item.vicinity;
-    $scope.restaurant.waitTime = item.wait;
     $scope.restaurant.lat = item.loc[1];
     $scope.restaurant.lng = item.loc[0];
+    $scope.restaurant.waitArr = item.wait;
+    $scope.restaurant.dist = item.dist;
 
     // Get restaurant rating and build string for star display
     $scope.restaurant.rating = item.rating;
@@ -69,7 +70,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
     $scope.restaurant.price = dollarSigns;
 
     // Change color of main indicator div based on wait time from database
-    switch ($scope.restaurant.waitTime[0].waitColor) {
+    switch (WaitOps.getLatest($scope.restaurant.waitArr)) {
       case '2_red':
         angular.element(document.querySelector('#currWait')).addClass('red');
         $scope.waitString = '> 30 Mins';
@@ -93,11 +94,11 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
   }
 
   // When a Check in Button is clicked, update the wait time on page and DB
-  $scope.updateWait = function(wait) {
-    console.log("disregard error below");
+  $scope.updateWait = function(waitColor) {
+
     var sendObj = {
       place_id: $scope.restaurant.place_id,
-      waitObj: {waitColor: wait, timestamp: new Date()}
+      waitObj: {waitColor: waitColor, timestamp: new Date()}
     };
     var geoOptions = {
       maximumAge: 60000,
@@ -114,8 +115,11 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update) {
       }
       var dist = distance.calc($scope.userLocation, restaurantLocation);
       if(dist <= 1){
-        updateWaitColorDiv(wait);
-        Update.updateWait(sendObj);
+        updateWaitColorDiv(waitColor);
+        Update.updateWait(sendObj, function(restaurantData) {
+          restaurantData.dist = $scope.restaurant.dist;
+          sessionStorage["tempStorage"] = JSON.stringify(restaurantData);
+        });
       } else {
         swal({
           html: '<p id="sweetAlert">You must be near the location to check in!</p>',
