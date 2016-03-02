@@ -33,7 +33,12 @@ exports.addRestaurants = function(req, res) {
             var hours = response.result.opening_hours;
             var photos = response.result.photos;
             var restaurant = new Restaurant({
-              wait: "3_grey",
+              wait: [
+                {
+                  wait: "3_grey", 
+                  timestamp: new Date()
+                }
+              ],
               loc: geo,
               hours: hours,
               id: item.id,
@@ -48,7 +53,7 @@ exports.addRestaurants = function(req, res) {
             restaurant.save(function(err) {
               if (err) {
                 console.log("not saved");
-                throw err;
+                throw err;            
               }
             });
           });
@@ -82,12 +87,10 @@ exports.getDatabase = function(req, res) {
 
 // Function that updates the wait time/color in the database
 exports.updateWait = function(req, res) {
-  // console.log("request obj: ", req.body);
   var query = {
     place_id: req.body.place_id
   };
 
-  // console.log("+++ query", query);
   var update = {
     wait: req.body.wait
   };

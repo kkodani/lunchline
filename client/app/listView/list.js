@@ -10,11 +10,11 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
     sessionStorage["tempStorage"] = JSON.stringify(obj);
   }
 
-  // Order variable used for the sorting order
-  $scope.order = function(predicate) {
-    $scope.predicate = predicate;
-    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-  };
+   // Order variable used for the sorting order
+   $scope.order = function(predicate) {
+      $scope.predicate = predicate;
+      $scope.reverse = ($scope.predicate === predicate[0].wait) ? !$scope.reverse : false;
+   };
 
   // Main function on page load
   // Gets users geolocation, gets data from database, filters data for view
