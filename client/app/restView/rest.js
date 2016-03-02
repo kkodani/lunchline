@@ -34,8 +34,8 @@ myApp.controller('restCtrl', function($scope, Data, Update) {
     $scope.restaurant.category = capitalizedType;
     $scope.restaurant.address = item.vicinity;
     $scope.restaurant.waitTime = item.wait;
-    $scope.restaurant.lat = item.geometry.location.lat;
-    $scope.restaurant.lng = item.geometry.location.lng;
+    $scope.restaurant.lat = item.loc[1];
+    $scope.restaurant.lng = item.loc[0];
 
     // Get restaurant rating and build string for star display
     $scope.restaurant.rating = item.rating;
