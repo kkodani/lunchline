@@ -5,15 +5,14 @@ var _ = require('underscore');
 if (!process.env.GOOGLEPLACESKEY) {
   var config = require('../config.js');
 }
+var locations = new PlaceSearch(process.env.GOOGLEPLACESKEY || config.placesKey);
 
 // Function called when post request is received with lat/long
 // Makes a request to 
 exports.getRestaurants = function(req, res) {
-  console.log('Receiving a request!', req.body);
   var lat = req.body.lat;
   var lng = req.body.long;
   var results = [];
-  var locations = new PlaceSearch(process.env.GOOGLEPLACESKEY || config.placesKey);
 
   // Make google places API call with lat and long
   locations.search({
