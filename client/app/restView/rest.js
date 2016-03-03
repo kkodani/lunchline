@@ -197,6 +197,6 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
 });
 myApp.filter('reverse', function() {
   return function(items) {
-    return items.slice().reverse();
+    return items.slice(1).reverse();
   };
 });
