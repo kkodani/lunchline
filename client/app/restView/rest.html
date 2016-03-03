@@ -29,7 +29,11 @@
       <ul class="list-group">
         <!-- Currently hardcoded directions originating from Makersquare -->
         <li class="list-group-item"><a class="restDetails" target="_blank" ng-href="https://www.google.com/maps/dir/{{loc.lat}},{{loc.long}}/{{restaurant.address}}">{{ restaurant.address }}</a></li>
-        <li class="list-group-item"><h2 class="restDetails">Estimated Wait Time is {{ waitString }}</h2></li>
+        <li class="list-group-item">
+          <h2 class="restDetails">
+            Estimated Wait Time is {{ waitString }}.  Last updated {{ timestamp }}
+          </h2>
+        </li>
         <li class="list-group-item"><div id="currWait"></div></li>
       </ul>
     </div>

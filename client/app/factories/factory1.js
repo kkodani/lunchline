@@ -89,7 +89,6 @@ myApp
     moment().format();
 
     var getLatest = function(wait) {
-      console.log(wait)
       var latest = wait.length-1;
       return wait[latest].waitColor;
     };

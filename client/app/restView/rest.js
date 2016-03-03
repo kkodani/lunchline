@@ -15,6 +15,8 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
     waitArr: ''
   };
 
+  $scope.timestamp = "";
+
   // Check if object doesn't exist, use session storage.
   // This way, on refresh or back, it won't have all undefined values
   if (!Data.clickedItem.id) {
@@ -26,72 +28,86 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
 
   $scope.loc = Data.userLoc;
 
-  if (Data.clickedItem.id) {
-    // Get data from clicked item
-    var item = Data.clickedItem;
+  var getTime = function(wait) {
+    return WaitOps.getTimestamp(wait)
+  };
 
-    $scope.restaurant.place_id = item.place_id;
-    $scope.restaurant.name = item.name;
+  var updateTimestamp = function() {
+    $scope.timestamp = getTime($scope.restaurant.waitArr);
+  };
 
-    var type = item.types;
-    var capitalizedType = type.charAt(0).toUpperCase() + type.substring(1);
+  var updateScopeRestaurant = function() {
 
-    $scope.restaurant.category = capitalizedType;
-    $scope.restaurant.address = item.vicinity;
-    $scope.restaurant.lat = item.loc[1];
-    $scope.restaurant.lng = item.loc[0];
-    $scope.restaurant.waitArr = item.wait;
-    $scope.restaurant.dist = item.dist;
+    if (Data.clickedItem.id) {
+      // Get data from clicked item
+      var item = Data.clickedItem;
 
-    // Get restaurant rating and build string for star display
-    $scope.restaurant.rating = item.rating;
-    var whiteStar = String.fromCharCode(9734);
-    var blackStar = String.fromCharCode(9733);
-    var starArray = [];
+      $scope.restaurant.place_id = item.place_id;
+      $scope.restaurant.name = item.name;
 
-    for (var i = 0; i < 5; i++) {
-      starArray.push(whiteStar);
+      var type = item.types;
+      var capitalizedType = type.charAt(0).toUpperCase() + type.substring(1);
+
+      $scope.restaurant.category = capitalizedType;
+      $scope.restaurant.address = item.vicinity;
+      $scope.restaurant.waitArr = item.wait;
+      $scope.restaurant.lat = item.geometry.location.lat;
+      $scope.restaurant.lng = item.geometry.location.lng;
+      $scope.restaurant.dist = item.dist;
+
+      // Get restaurant rating and build string for star display
+      $scope.restaurant.rating = item.rating;
+      var whiteStar = String.fromCharCode(9734);
+      var blackStar = String.fromCharCode(9733);
+      var starArray = [];
+
+      for (var i = 0; i < 5; i++) {
+        starArray.push(whiteStar);
+      }
+
+      for (var i = 0; i < Math.round($scope.restaurant.rating); i++) {
+        starArray.splice(i, 1, blackStar);
+      }
+
+      $scope.starString = starArray.join('');
+
+      // Calculate Price And Convert to Dollar Signs
+      var price = item.price_level;
+      var dollarSigns = '';
+
+      for (var i = 0; i < price; i++) {
+        dollarSigns += '$';
+      }
+
+      $scope.restaurant.price = dollarSigns;
+      updateTimestamp();
+
+      // Change color of main indicator div based on wait time from database
+      switch (WaitOps.getLatest($scope.restaurant.waitArr)) {
+        case '2_red':
+          angular.element(document.querySelector('#currWait')).addClass('red');
+          $scope.waitString = '> 30 Mins';
+          break;
+        case '1_yellow':
+          angular.element(document.querySelector('#currWait')).addClass('yellow');
+          $scope.waitString = '~ 20 Mins';
+          break;
+        case '0_green':
+          angular.element(document.querySelector('#currWait')).addClass('green');
+          $scope.waitString = '< 10 Mins';
+          break;
+        case '3_grey':
+          angular.element(document.querySelector('#currWait')).addClass('oliveGreen');
+          $scope.waitString = 'not available';
+          break;
+      }
+    } else { // No data loaded.  Load default values.
+      angular.element(document.querySelector('#currWait')).addClass('oliveGreen');
+      $scope.waitString = 'not available';
     }
 
-    for (var i = 0; i < Math.round($scope.restaurant.rating); i++) {
-      starArray.splice(i, 1, blackStar);
-    }
-
-    $scope.starString = starArray.join('');
-
-    // Calculate Price And Convert to Dollar Signs
-    var price = item.price_level;
-    var dollarSigns = '';
-
-    for (var i = 0; i < price; i++) {
-      dollarSigns += '$';
-    }
-
-    $scope.restaurant.price = dollarSigns;
-
-    // Change color of main indicator div based on wait time from database
-    switch (WaitOps.getLatest($scope.restaurant.waitArr)) {
-      case '2_red':
-        angular.element(document.querySelector('#currWait')).addClass('red');
-        $scope.waitString = '> 30 Mins';
-        break;
-      case '1_yellow':
-        angular.element(document.querySelector('#currWait')).addClass('yellow');
-        $scope.waitString = '~ 20 Mins';
-        break;
-      case '0_green':
-        angular.element(document.querySelector('#currWait')).addClass('green');
-        $scope.waitString = '< 10 Mins';
-        break;
-      case '3_grey':
-        angular.element(document.querySelector('#currWait')).addClass('oliveGreen');
-        $scope.waitString = 'not available';
-        break;
-    }
-  } else { // No data loaded.  Load default values.
-    angular.element(document.querySelector('#currWait')).addClass('oliveGreen');
-    $scope.waitString = 'not available';
   }
+  updateScopeRestaurant();
 
   // When a Check in Button is clicked, update the wait time on page and DB
   $scope.updateWait = function(waitColor) {
@@ -119,6 +135,8 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
         Update.updateWait(sendObj, function(restaurantData) {
           restaurantData.dist = $scope.restaurant.dist;
           sessionStorage["tempStorage"] = JSON.stringify(restaurantData);
+          Data.clickedItem = JSON.parse(sessionStorage.tempStorage);
+          updateScopeRestaurant();
         });
       } else {
         swal({
@@ -131,6 +149,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
       }
     }, function(error){console.log(error);}, geoOptions);
   };
+
 
   // Sweet Alert popup to thank users when they check in a wait time.
   function updateWaitColorDiv(wait) {
