@@ -34,7 +34,11 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
 
   $scope.getSlicedTime = function(timestamp) {
     return WaitOps.getSlicedTime(timestamp);
-  }
+  };
+
+  $scope.getWaitColor = function(color) {
+    return WaitOps.getWaitColor(color);
+  };
 
   var updateTimestamp = function() {
     $scope.timestamp = getTime($scope.restaurant.waitArr);
@@ -190,4 +194,9 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
         break;
     }
   }
+});
+myApp.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
 });

@@ -41,7 +41,7 @@
     <p id="timeline-title">Timeline</p>
     <div id="timeline">
       <div id="timeline-2">
-        <div class="timeline-elt" ng-repeat="wait in restaurant.waitArr">
+        <div class="timeline-elt" ng-repeat="wait in restaurant.waitArr | reverse" ng-style="{'background-color': getWaitColor(wait.waitColor)}">
           {{ getSlicedTime(wait.timestamp) }}
         </div>
       </div>

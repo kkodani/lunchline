@@ -154,12 +154,15 @@ a.list-group-item {
 .timeline-elt {
   display: inline-block;
   background-color: red;
-  border-left: solid 2px;
-  border-right: solid 2px;
+  border: solid 2px;
+  border-color: #e6e6e6;
   height: 50px;
   width: 100px;
   white-space: normal;
   font-size: 12px;
+  padding: 4px;
+  margin: 2px;
+  font-family: Georgia;
 }
 
 .waitTimeButtons {

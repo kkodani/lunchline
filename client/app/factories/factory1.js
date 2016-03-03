@@ -103,10 +103,30 @@ myApp
       return t;
     };
 
+    var getWaitColor = function(color) {
+      var resultColor = "";
+      switch(color) {
+        case "0_green":
+          resultColor = "#5cb85c";
+          break;
+        case "1_yellow":
+          resultColor = "#f0ad4e";
+          break;
+        case "2_red":
+          resultColor = "#d9534f";
+          break;
+        case "3_grey":
+          resultColor = "#cccccc";
+          break;
+      }
+      return resultColor;
+    };
+
     return {
       getLatest: getLatest,
       getTimestamp: getTimestamp,
-      getSlicedTime: getSlicedTime
+      getSlicedTime: getSlicedTime,
+      getWaitColor: getWaitColor
     };
   });
 
