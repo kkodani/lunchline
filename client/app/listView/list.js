@@ -24,6 +24,7 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
       timeout: 30000
     };
     navigator.geolocation.getCurrentPosition(function(position) {
+      console.log("received geolocation");
       $scope.userLocation = {
         lat: position.coords.latitude,
         long: position.coords.longitude

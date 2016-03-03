@@ -1,6 +1,6 @@
 /* Handles controller code for main restaurant info */
 
-myApp.controller('restCtrl', function($scope, Data, Update) {
+myApp.controller('restCtrl', function($scope, distance, Data, Update) {
 
   $scope.restaurant = {
     id: '',
@@ -89,15 +89,38 @@ myApp.controller('restCtrl', function($scope, Data, Update) {
 
   // When a Check in Button is clicked, update the wait time on page and DB
   $scope.updateWait = function(wait) {
-    console.log('Update Wait called : ', wait);
-
+    console.log("disregard error below");
     var sendObj = {
       place_id: $scope.restaurant.place_id,
       wait: wait
     };
-
-    updateWaitColorDiv(wait);
-    Update.updateWait(sendObj);
+    var geoOptions = {
+      maximumAge: 60000,
+      timeout: 30000
+    };
+    navigator.geolocation.getCurrentPosition(function(position) {
+      $scope.userLocation = {
+        lat: position.coords.latitude,
+        long: position.coords.longitude
+      };
+      var restaurantLocation = {
+        lat: $scope.restaurant.lat,
+        long: $scope.restaurant.lng
+      }
+      var dist = distance.calc($scope.userLocation, restaurantLocation);
+      if(dist <= 1){
+        updateWaitColorDiv(wait);
+        Update.updateWait(sendObj);
+      } else {
+        swal({
+          html: '<p id="sweetAlert">You must be near the location to check in!</p>',
+          type: 'error',
+          timer: 1500,
+          width: 600,
+          showConfirmButton: false
+        });
+      }
+    }, function(error){console.log(error);}, geoOptions);
   };
 
   // Sweet Alert popup to thank users when they check in a wait time.
