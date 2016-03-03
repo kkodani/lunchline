@@ -14,44 +14,47 @@ exports.addRestaurants = function(req, res) {
   var lng = req.body.long;
   var locations = new PlaceSearch(process.env.GOOGLEPLACESKEY || config.placesKey);
 
-  // Make google places API call with lat and long
+  // Make 'google place search' API call with lat and long
   locations.search({
-    keyword: 'restaurants',
+    type: 'restaurant',
     location: [lat, lng],
     radius: 5000
   }, function(err, response) {
-    if (err) {
-      throw err;
-    }
-    // Loop through each of the response results and check if restaurant is in database
-    // If not, put it in the database and initiate it to grey
+    if(err) { throw err; }
     _.each(response.results, function(item) {
       Restaurant.findOne({
         id: item.id
       }, function(err, obj) {
         if (obj === null) {
-          var geo = [item.geometry.location.lng, item.geometry.location.lat];
-          var restaurant = new Restaurant({
-            wait: "3_grey",
-            loc: geo,
-            id: item.id,
-            name: item.name,
-            place_id: item.place_id,
-            price_level: item.price_level,
-            rating: item.rating,
-            types: item.types[0],
-            vicinity: item.vicinity
-          });
-          restaurant.save(function(err) {
-            if (err) {
-              console.log("not saved");
-              throw err;
-            }
+          // Make 'google place details' API call for new location
+          locations.details({placeid: item.place_id}, function(err, response) {
+            var geo = [item.geometry.location.lng, item.geometry.location.lat];
+            var hours = response.result.opening_hours;
+            var photos = response.result.photos;
+            var restaurant = new Restaurant({
+              wait: "3_grey",
+              loc: geo,
+              hours: hours,
+              id: item.id,
+              name: item.name,
+              photos: photos,
+              place_id: item.place_id,
+              price_level: item.price_level,
+              rating: item.rating,
+              types: item.types[0],
+              vicinity: item.vicinity
+            });
+            restaurant.save(function(err) {
+              if (err) {
+                console.log("not saved");
+                throw err;
+              }
+            });
           });
         }
       });
     })
-    res.send();
+    res.end();
   });
 };
 

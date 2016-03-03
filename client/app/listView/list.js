@@ -17,7 +17,7 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
   };
 
   // Main function on page load
-  // Gets users geolocation, then pulls nearby places from database
+  // Gets users geolocation, gets data from database, filters data for view
   $scope.pullFromDatabase = function() {
     var geoOptions = {
       maximumAge: 60000,
@@ -29,12 +29,30 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
         long: position.coords.longitude
       };
       Data.getData($scope.userLocation, function(fetchedData) {
-        for(var i = 0; i < fetchedData.length; i++) {
-          var destination = {
-            long: fetchedData[i].restaurant.loc[0],
-            lat: fetchedData[i].restaurant.loc[1]
+        for(var i = 0; i < fetchedData.length; i++){
+          var item = fetchedData[i];
+          var now = new Date();
+          var currentDay = now.getDay();
+          var currentHour = parseInt("" + now.getHours() + now.getMinutes());
+          var openNow = false;
+          try {
+            var restaurantHours = item.restaurant.hours.periods;
+            for(var j = 0; j < restaurantHours.length; j++){
+              if(restaurantHours[j].open.day === currentDay){
+                var open = parseInt(restaurantHours[j].open.time);
+                var close = parseInt(restaurantHours[j].close.time);
+                if(currentHour >= open && currentHour <= close){
+                  openNow = true;
+                }
+              }
+            };
+          } catch(err){ openNow = true; };
+          var coords = {
+            long: item.restaurant.loc[0],
+            lat: item.restaurant.loc[1]
           };
-         fetchedData[i].restaurant.dist = distance.calc($scope.userLocation, destination);
+          item.restaurant.dist = distance.calc($scope.userLocation, coords);
+          item.restaurant.open = openNow;
         }
         $scope.data = fetchedData;
         $scope.contentLoading = false;

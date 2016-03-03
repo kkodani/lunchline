@@ -7,14 +7,10 @@ var restaurantSchema = new mongoose.Schema({
     type: [Number],
     index: '2dsphere'
   },
+  hours: {},
   id: String,
   name: String,
-  photos : [{
-    height: Number,
-    html_attributions: [],
-    photo_reference: String,
-    width: Number
-  }],
+  photos : {},
   place_id: String,
   price_level: Number,
   rating: Number,
