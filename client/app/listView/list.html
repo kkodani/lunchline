@@ -9,7 +9,7 @@
       <ul class="list-inline">
         <li class="listHeading" id="distanceTitle" ng-click="order('restaurant.dist')">Dist</li>
         <li class="listHeading" id="nameTitle" ng-click="order('restaurant.name')"> Name</li>
-        <li class="listHeading pull-right" id="waitTitle" ng-click="order('restaurant.wait')">Wait</li>
+        <li class="listHeading pull-right" id="waitTitle" ng-click="orderByWait()">Wait</li>
       </ul>
     </div>
 
@@ -17,7 +17,7 @@
     <a ng-repeat="restaurant in data | orderBy:predicate:reverse" ui-sref="restView" ng-click="transferEvent(restaurant.restaurant)" class="list-group-item" ng-show="{{ restaurant.restaurant.open }}">
       {{ restaurant.restaurant.dist }}mi - {{ restaurant.restaurant.name }} 
       <span class="waitTimestamp">Last updated: {{ getTime(restaurant.restaurant.wait) }}</span>
-      <img class="waitColorDot" ng-src="../../assets/{{getLatestWait(restaurant.restaurant.wait)}}.png">
+      <img class="waitColorDot" ng-src="../../assets/{{ getLatestWait(restaurant.restaurant.wait) }}.png">
       <img class="rightChevron" ng-src="../../assets/rightChevron.png">
     </a>
   </div>

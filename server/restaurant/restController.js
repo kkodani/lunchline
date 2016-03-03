@@ -35,7 +35,7 @@ exports.addRestaurants = function(req, res) {
             var restaurant = new Restaurant({
               wait: [
                 {
-                  wait: "3_grey", 
+                  waitColor: "3_grey", 
                   timestamp: new Date()
                 }
               ],
@@ -68,7 +68,7 @@ exports.getDatabase = function(req, res) {
   var coords = [];
   coords[0] = req.body.long;
   coords[1] = req.body.lat;
-  var maxRadius = 5;
+  var maxRadius = 10;
   // convert to radians
   var maxDistance = maxRadius/6371;
 

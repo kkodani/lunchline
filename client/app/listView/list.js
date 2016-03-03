@@ -11,10 +11,22 @@ myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
   }
 
    // Order variable used for the sorting order
-   $scope.order = function(predicate) {
-      $scope.predicate = predicate;
-      $scope.reverse = ($scope.predicate === predicate[0].waitColor) ? !$scope.reverse : false;
-   };
+  $scope.order = function(predicate) {
+    $scope.predicate = predicate;
+    $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  };
+
+  $scope.orderByWait = function() {
+    $scope.predicate = "restaurant.wait[restaurant.wait.length-1].waitColor[0]";
+    $scope.reverse = !$scope.reverse;
+    $scope.data.sort(function(itemA, itemB) {
+      var al = itemA.restaurant.wait.length - 1;
+      var bl = itemB.restaurant.wait.length - 1;
+      var a = parseInt(itemA.restaurant.wait[al].waitColor[0])
+      var b = parseInt(itemB.restaurant.wait[bl].waitColor[0])
+      return b - a;
+    });
+  };
 
   // Main function on page load
   // Gets users geolocation, gets data from database, filters data for view
