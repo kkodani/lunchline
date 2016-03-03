@@ -32,6 +32,10 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
     return WaitOps.getTimestamp(wait)
   };
 
+  $scope.getSlicedTime = function(timestamp) {
+    return WaitOps.getSlicedTime(timestamp);
+  }
+
   var updateTimestamp = function() {
     $scope.timestamp = getTime($scope.restaurant.waitArr);
   };

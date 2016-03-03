@@ -134,6 +134,34 @@ a.list-group-item {
   width: 100%;
 }
 
+#timeline-title {
+  margin: 0px 5% 0px 5%;
+  font-size: 26px;
+}
+
+#timeline {
+  margin: 0px 5% 0px 5%;
+  height: 100px;
+  width: 90%;
+  white-space: nowrap;
+  overflow: scroll;
+}
+
+#timeline-2 {
+  margin: 0px 0px 0px 0px;
+}
+
+.timeline-elt {
+  display: inline-block;
+  background-color: red;
+  border-left: solid 2px;
+  border-right: solid 2px;
+  height: 50px;
+  width: 100px;
+  white-space: normal;
+  font-size: 12px;
+}
+
 .waitTimeButtons {
   height: 150px;
   padding: 0px 15px;

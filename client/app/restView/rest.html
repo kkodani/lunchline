@@ -38,6 +38,15 @@
       </ul>
     </div>
 
+    <p id="timeline-title">Timeline</p>
+    <div id="timeline">
+      <div id="timeline-2">
+        <div class="timeline-elt" ng-repeat="wait in restaurant.waitArr">
+          {{ getSlicedTime(wait.timestamp) }}
+        </div>
+      </div>
+    </div>
+
     <!-- Wait Time -->
     <h1 class="center-block center-text checkIn">Check In</h2>
 

@@ -86,7 +86,6 @@ myApp
     };
   }).factory('WaitOps', function() {
 
-    moment().format();
 
     var getLatest = function(wait) {
       var latest = wait.length-1;
@@ -99,9 +98,15 @@ myApp
       return date.fromNow();
     };
 
+    var getSlicedTime = function(timestamp) {
+      var t = moment(timestamp).format("ddd, MMM Do, h:mm a");
+      return t;
+    };
+
     return {
       getLatest: getLatest,
-      getTimestamp: getTimestamp
+      getTimestamp: getTimestamp,
+      getSlicedTime: getSlicedTime
     };
   });
 
