@@ -15,7 +15,13 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
     waitArr: ''
   };
 
+
   $scope.timestamp = "";
+
+  $scope.$watch(function() { return Data.clickedItem }, function(n, o) {
+    console.log("INSIDE WATCH", n, o);
+    // updateScopeRestaurant();
+  });
 
   // Check if object doesn't exist, use session storage.
   // This way, on refresh or back, it won't have all undefined values

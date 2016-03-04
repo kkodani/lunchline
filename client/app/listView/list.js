@@ -1,7 +1,15 @@
 // Controller for the main home list view
+<<<<<<< 365fc6223ab3b88c25d5806e1888ed6d4cd21ea3
 myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
   $scope.data = [];
   $scope.userLocation = {};
+=======
+myApp.controller('listCtrl', function(distance, Data, $scope, Search) {
+   $scope.data = [];
+   $scope.userLocation = {};
+   $scope.searchResult = {};
+   $scope.searchData = {};
+>>>>>>> [Feature] Added search bar,works on home, needs to be tested on restView
 
   // Function called when a wait time is reported.  Saves to session storage for refresh/back cases
   // and updates database.
@@ -91,6 +99,27 @@ myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
     }
   };
 
+  $scope.$root.getSearch = function () {
+     $scope.data = [];
+     console.log($scope.$root.searchData);
+     Search.fetchData($scope.$root.searchData)
+     .then(function(result) { 
+        $scope.searchResult.restaurant = result;
+        var destination = {
+           lat: $scope.searchResult.restaurant.geometry.location.lat,
+           long: $scope.searchResult.restaurant.geometry.location.lng
+        };
+        $scope.searchResult.restaurant.dist = distance.calc($scope.userLocation, destination);
+        $scope.data[0] = $scope.searchResult;
+        $scope.$root.searchData.searchInput = "";
+        Data.clickedItem = $scope.data[0].restaurant;
+        console.log($scope.data);
+     })
+     .catch(function (error) {
+        console.error(error);
+     })
+  }
+
   // Call main post request to load data from database
   $scope.pullFromDatabase();
 
@@ -103,3 +132,4 @@ myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
   $scope.order('restaurant.dist');
   $scope.contentLoading = true;
 });
+

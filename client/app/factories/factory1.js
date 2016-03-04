@@ -15,17 +15,17 @@ myApp
         method: 'POST',
         url: '/api/get',
         data: userLoc
-      }).then(function success(data){
-        var collection = data.data.map(function(restaurant) {
-          return {
-            restaurant: restaurant
-          };
+      }).then(function success(data) { 
+          var collection = data.data.map(function(restaurant) {
+            return {
+              restaurant: restaurant
+            };
+          });
+          callback(collection);
+        },
+        function error(response) {
+          console.log("ERROR: ", response);
         });
-        callback(collection);
-      },
-      function error(response) {
-        console.log("ERROR: ", response);
-      });
     };
     
     // Storage of clicked item on listView so that restView can pull up data
@@ -84,6 +84,7 @@ myApp
     return {
       updateWait: updateWait
     };
+
   }).factory('WaitOps', function() {
 
 
@@ -128,5 +129,25 @@ myApp
       getSlicedTime: getSlicedTime,
       getWaitColor: getWaitColor
     };
+
+  }).factory("Search", function ($http) {
+
+    var fetchData = function (input) {
+
+      return $http({
+        method: "POST",
+        url: "/api/search",
+        data: input
+      }).then(function (response) {
+        return response.data;
+      })
+      .catch(function (error) {
+        console.error(error);
+      })
+    }
+
+    return {
+      fetchData: fetchData
+    }
   });
 

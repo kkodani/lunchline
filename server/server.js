@@ -26,5 +26,6 @@ app.use('/bower', express.static(__dirname + '/../bower_components/'));
 app.post('/api/add', jsonParser, restController.addRestaurants);
 app.post('/api/get', jsonParser, restController.getDatabase);
 app.put('/api/update', jsonParser, restController.updateWait);
+app.post('/api/search', jsonParser, restController.getSearch);
 
 module.exports = app;
