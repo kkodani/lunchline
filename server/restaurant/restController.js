@@ -35,8 +35,8 @@ exports.addRestaurants = function(req, res) {
             var restaurant = new Restaurant({
               wait: [
                 {
-                  waitColor: "3_grey", 
-                  timestamp: new Date()
+                  waitColor: "3_grey",
+                  timestamp: (new Date()).toISOString()
                 }
               ],
               loc: geo,
@@ -53,7 +53,7 @@ exports.addRestaurants = function(req, res) {
             restaurant.save(function(err) {
               if (err) {
                 console.log("not saved");
-                throw err;            
+                throw err;
               }
             });
           });
@@ -92,7 +92,7 @@ exports.updateWait = function(req, res) {
   };
 
   var update = {
-    $push: {"wait": {waitColor: req.body.waitObj.waitColor, timestamp: new Date()}}
+    $push: {"wait": {waitColor: req.body.waitObj.waitColor, timestamp: (new Date()).toISOString()}}
   }
 
   // Upsert updates instead of adding a new entry
