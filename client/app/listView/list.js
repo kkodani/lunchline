@@ -43,6 +43,9 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
         lat: position.coords.latitude,
         long: position.coords.longitude
       };
+      sessionStorage["tempStorage2"] = JSON.stringify($scope.userLocation);
+      Data.userLoc = $scope.userLocation;
+      
       Data.getData($scope.userLocation, function(fetchedData) {
         for(var i = 0; i < fetchedData.length; i++){
           var item = fetchedData[i];

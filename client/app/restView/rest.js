@@ -28,10 +28,10 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
   if (!Data.clickedItem.id) {
     Data.clickedItem = JSON.parse(sessionStorage.tempStorage);
   }
-  // if (!Data.userLoc.lat) {
-  //   Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
-  // }
 
+  if (!Data.userLoc.lat) {
+    Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
+  }
   $scope.loc = Data.userLoc;
 
   function getTime(wait) {
