@@ -15,20 +15,26 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
     waitArr: ''
   };
 
+
   $scope.timestamp = "";
+
+  $scope.$watch(function() { return Data.clickedItem }, function(n, o) {
+    console.log("INSIDE WATCH", n, o);
+    updateScopeRestaurant();
+  });
 
   // Check if object doesn't exist, use session storage.
   // This way, on refresh or back, it won't have all undefined values
   if (!Data.clickedItem.id) {
     Data.clickedItem = JSON.parse(sessionStorage.tempStorage);
   }
-  if (!Data.userLoc.lat) {
-    Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
-  }
+  // if (!Data.userLoc.lat) {
+  //   Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
+  // }
 
   $scope.loc = Data.userLoc;
 
-  var getTime = function(wait) {
+  function getTime(wait) {
     return WaitOps.getTimestamp(wait)
   };
 
@@ -40,11 +46,11 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
     return WaitOps.getWaitColor(color);
   };
 
-  var updateTimestamp = function() {
+  function updateTimestamp() {
     $scope.timestamp = getTime($scope.restaurant.waitArr);
   };
 
-  var updateScopeRestaurant = function() {
+  function updateScopeRestaurant() {
 
     if (Data.clickedItem.id) {
       // Get data from clicked item

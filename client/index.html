@@ -30,13 +30,19 @@
       <script src='./app.js'></script>
       <script src='./app/listView/list.js'></script>
       <script src='./app/restView/rest.js'></script>
+      <!-- <script src='./app/listView/search.js'></script> -->
       <script src='./app/factories/factory1.js'></script>
+      <script src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
    </head>
    <body>
       <!--Navigation bar -->
       <div class="scrollable" id="navigation">
          <div class="scrollable-header" id="pageHeader">
             <img class="logo center-block" src="/assets/green_on_white.png">
+            <form id="search-bar" ng-submit="$root.getSearch()" ng-controller="listCtrl">
+               <input id="search-input" placeholder="Find a Restaurant" type="text" ng-model="$root.searchData.searchInput">
+               <button type="submit">Search</button>
+            </form>
          </div>
          <div ui-view class="scrollable-content" ng-animate=" 'animate' ">
             <!-- UI Router inserts here -->

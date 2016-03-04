@@ -1,7 +1,9 @@
 // Controller for the main home list view
-myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
-  $scope.data = [];
-  $scope.userLocation = {};
+myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
+   $scope.data = [];
+   $scope.userLocation = {};
+   $scope.searchResult = {};
+   $scope.searchData = {};
 
   // Function called when a wait time is reported.  Saves to session storage for refresh/back cases
   // and updates database.
@@ -68,6 +70,7 @@ myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
           item.restaurant.open = openNow;
         }
         $scope.data = fetchedData;
+        console.log($scope.data);
         $scope.contentLoading = false;
       });
     }, function(error){console.log(error);}, geoOptions);
@@ -91,6 +94,29 @@ myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
     }
   };
 
+  $scope.$root.getSearch = function () {
+     $scope.data = [];
+     console.log($scope.$root.searchData);
+     Search.fetchData($scope.$root.searchData)
+     .then(function(result) { 
+        $scope.searchResult.restaurant = result;
+        var destination = {
+           lat: $scope.searchResult.restaurant.loc[1],
+           long: $scope.searchResult.restaurant.loc[0]
+        };
+        $scope.searchResult.restaurant.dist = distance.calc($scope.userLocation, destination);
+        $scope.searchResult.restaurant.open = $scope.searchResult.restaurant.hours.open_now;
+        $scope.data[0] = $scope.searchResult;
+        $scope.$root.searchData.searchInput = "";
+        Data.clickedItem = $scope.data[0].restaurant;
+        console.log($scope.data);
+     })
+     .catch(function (error) {
+        console.error(error);
+        alert("Data not available for this location");
+     })
+  }
+
   // Call main post request to load data from database
   $scope.pullFromDatabase();
 
@@ -103,3 +129,4 @@ myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
   $scope.order('restaurant.dist');
   $scope.contentLoading = true;
 });
+

@@ -108,3 +108,16 @@ exports.updateWait = function(req, res) {
     res.json(restaurant);
   });
 };
+
+exports.getSearch = function (req, res, next) {
+
+  var name = req.body.searchInput;
+  
+  Restaurant.findOne({name: name})
+  .then(function (result) { 
+      res.send(result);
+    })         
+    .catch(function(error) {
+      res.status(400).send(error);
+  })
+};
