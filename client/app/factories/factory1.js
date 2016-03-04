@@ -33,7 +33,10 @@ myApp
     // Storage of userLocation on listView so that restView can pull up location
     var userLoc = {};
 
+    var notLoaded = true;
+
     return {
+      notLoaded: notLoaded,
       addData: addData,
       getData: getData,
       clickedItem: clickedItem,

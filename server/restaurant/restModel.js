@@ -21,4 +21,4 @@ var restaurantSchema = new mongoose.Schema({
   vicinity: String
 });
 
-module.exports = mongoose.model('Restaurant5', restaurantSchema)
+module.exports = mongoose.model('Restaurant7', restaurantSchema)

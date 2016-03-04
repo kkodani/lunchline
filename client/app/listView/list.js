@@ -122,7 +122,10 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
 
   // Request to ping Google maps to search for new locations
   // On a delay to wait for geolocation data from pullFromDatabase
-  setTimeout($scope.addToDatabase, 100);
+  if(Data.notLoaded) {
+    setTimeout($scope.addToDatabase, 100);
+    Data.notLoaded = false;
+  }
 
   // Sets default order to be ascending
   $scope.reverse = true;
