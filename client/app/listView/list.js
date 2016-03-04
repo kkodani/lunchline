@@ -73,7 +73,6 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
           item.restaurant.open = openNow;
         }
         $scope.data = fetchedData;
-        console.log($scope.data);
         $scope.contentLoading = false;
       });
     }, function(error){console.log(error);}, geoOptions);
@@ -99,7 +98,6 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
 
   $scope.$root.getSearch = function () {
      $scope.data = [];
-     console.log($scope.$root.searchData);
      Search.fetchData($scope.$root.searchData)
      .then(function(result) { 
         $scope.searchResult.restaurant = result;
@@ -112,7 +110,6 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
         $scope.data[0] = $scope.searchResult;
         $scope.$root.searchData.searchInput = "";
         Data.clickedItem = $scope.data[0].restaurant;
-        console.log($scope.data);
      })
      .catch(function (error) {
         console.error(error);

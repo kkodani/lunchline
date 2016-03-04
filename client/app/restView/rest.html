@@ -34,7 +34,7 @@
             Estimated Wait Time is {{ waitString }}.  Last updated {{ timestamp }}
           </h2>
         </li>
-        <li class="list-group-item"><div id="currWait"></div></li>
+        <li class="list-group-item"><div id="currWait" ng-style="{'background-color': getLatestWaitColor(restaurant.waitArr)}"></div></li>
       </ul>
     </div>
 
