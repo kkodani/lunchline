@@ -19,7 +19,6 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
   $scope.timestamp = "";
 
   $scope.$watch(function() { return Data.clickedItem }, function(n, o) {
-    console.log("INSIDE WATCH", n, o);
     updateScopeRestaurant();
   });
 
@@ -28,10 +27,10 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
   if (!Data.clickedItem.id) {
     Data.clickedItem = JSON.parse(sessionStorage.tempStorage);
   }
-  // if (!Data.userLoc.lat) {
-  //   Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
-  // }
 
+  if (!Data.userLoc.lat) {
+    Data.userLoc = JSON.parse(sessionStorage.tempStorage2);
+  }
   $scope.loc = Data.userLoc;
 
   function getTime(wait) {
@@ -43,6 +42,11 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
   };
 
   $scope.getWaitColor = function(color) {
+    return WaitOps.getWaitColor(color);
+  };
+
+  $scope.getLatestWaitColor = function(wait) {
+    var color = WaitOps.getLatest(wait);
     return WaitOps.getWaitColor(color);
   };
 
@@ -99,19 +103,19 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
       // Change color of main indicator div based on wait time from database
       switch (WaitOps.getLatest($scope.restaurant.waitArr)) {
         case '2_red':
-          angular.element(document.querySelector('#currWait')).addClass('red');
+          // angular.element(document.querySelector('#currWait')).addClass('red');
           $scope.waitString = '> 30 Mins';
           break;
         case '1_yellow':
-          angular.element(document.querySelector('#currWait')).addClass('yellow');
+          // angular.element(document.querySelector('#currWait')).addClass('yellow');
           $scope.waitString = '~ 20 Mins';
           break;
         case '0_green':
-          angular.element(document.querySelector('#currWait')).addClass('green');
+          // angular.element(document.querySelector('#currWait')).addClass('green');
           $scope.waitString = '< 10 Mins';
           break;
         case '3_grey':
-          angular.element(document.querySelector('#currWait')).addClass('oliveGreen');
+          // angular.element(document.querySelector('#currWait')).addClass('oliveGreen');
           $scope.waitString = 'not available';
           break;
       }
