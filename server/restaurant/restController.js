@@ -19,7 +19,8 @@ exports.addRestaurants = function(req, res) {
   locations.search({
     type: 'restaurant',
     location: [lat, lng],
-    radius: 5000
+    radius: 5000,
+    rankby: "distance"
   }, function(err, response) {
     if(err) { throw err; }
     _.each(response.results, function(item) {
