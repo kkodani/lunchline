@@ -134,21 +134,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
       place_id: $scope.restaurant.place_id,
       waitObj: {waitColor: waitColor}
     };
-    var geoOptions = {
-      maximumAge: 60000,
-      timeout: 30000
-    };
-    navigator.geolocation.getCurrentPosition(function(position) {
-      $scope.userLocation = {
-        lat: position.coords.latitude,
-        long: position.coords.longitude
-      };
-      var restaurantLocation = {
-        lat: $scope.restaurant.lat,
-        long: $scope.restaurant.lng
-      }
-      var dist = distance.calc($scope.userLocation, restaurantLocation);
-      if(dist <= 1){
+      if($scope.restaurant.dist <= 1){
         updateWaitColorDiv(waitColor);
         Update.updateWait(sendObj, function(restaurantData) {
           restaurantData.dist = $scope.restaurant.dist;
@@ -165,7 +151,7 @@ myApp.controller('restCtrl', function($scope, distance, Data, Update, WaitOps) {
           showConfirmButton: false
         });
       }
-    }, function(error){console.log(error);}, geoOptions);
+    
   };
 
 
