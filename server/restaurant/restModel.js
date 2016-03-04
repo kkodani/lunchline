@@ -2,7 +2,10 @@
 var mongoose = require('mongoose');
 
 var restaurantSchema = new mongoose.Schema({
-  wait: String,
+  wait: [{
+    waitColor: String,
+    timestamp: String
+  }],
   loc: {
     type: [Number],
     index: '2dsphere'
@@ -18,4 +21,4 @@ var restaurantSchema = new mongoose.Schema({
   vicinity: String
 });
 
-module.exports = mongoose.model('Restaurant3', restaurantSchema)
+module.exports = mongoose.model('Restaurant5', restaurantSchema)

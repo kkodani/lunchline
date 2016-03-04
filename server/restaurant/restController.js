@@ -5,6 +5,7 @@ var _ = require('underscore');
 if (!process.env.GOOGLEPLACESKEY) {
   var config = require('../config.js');
 }
+var locations = new PlaceSearch(process.env.GOOGLEPLACESKEY || config.placesKey);
 
 // Function called when post request is received with lat/long
 // Makes a request to
@@ -32,7 +33,12 @@ exports.addRestaurants = function(req, res) {
             var hours = response.result.opening_hours;
             var photos = response.result.photos;
             var restaurant = new Restaurant({
-              wait: "3_grey",
+              wait: [
+                {
+                  waitColor: "3_grey", 
+                  timestamp: new Date()
+                }
+              ],
               loc: geo,
               hours: hours,
               id: item.id,
@@ -47,7 +53,7 @@ exports.addRestaurants = function(req, res) {
             restaurant.save(function(err) {
               if (err) {
                 console.log("not saved");
-                throw err;
+                throw err;            
               }
             });
           });
@@ -62,7 +68,7 @@ exports.getDatabase = function(req, res) {
   var coords = [];
   coords[0] = req.body.long;
   coords[1] = req.body.lat;
-  var maxRadius = 5;
+  var maxRadius = 10;
   // convert to radians
   var maxDistance = maxRadius/6371;
 
@@ -81,19 +87,18 @@ exports.getDatabase = function(req, res) {
 
 // Function that updates the wait time/color in the database
 exports.updateWait = function(req, res) {
-  // console.log("request obj: ", req.body);
   var query = {
-    place_id: req.body.place_id
+    place_id: req.body.place_id,
   };
 
-  // console.log("+++ query", query);
   var update = {
-    wait: req.body.wait
-  };
+    $push: {"wait": {waitColor: req.body.waitObj.waitColor, timestamp: new Date()}}
+  }
 
   // Upsert updates instead of adding a new entry
   var options = {
-    upsert: true
+    upsert: true,
+    new: true
   };
 
   Restaurant.findOneAndUpdate(query, update, options, function(err, restaurant) {

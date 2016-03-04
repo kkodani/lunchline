@@ -27,13 +27,17 @@ myApp
         console.log("ERROR: ", response);
       });
     };
-
+    
     // Storage of clicked item on listView so that restView can pull up data
     var clickedItem = {};
+    // Storage of userLocation on listView so that restView can pull up location
+    var userLoc = {};
+
     return {
       addData: addData,
       getData: getData,
-      clickedItem: clickedItem
+      clickedItem: clickedItem,
+      userLoc: userLoc
     }
 
   // Distance factory: calculates the distance of a lat/long from the user's lat/long
@@ -65,14 +69,13 @@ myApp
   // Update factory : updates the database on a reported restaurant wait time with put request
   }).factory('Update', function($http) {
 
-    function updateWait(objToSend) {
+    function updateWait(objToSend, callback) {
       $http({
         method: 'PUT',
         url: '/api/update',
         data: objToSend
       }).then(function successCallback(response) {
-        // console.log('PUT: Sent ' + JSON.stringify(objToSend) + ' successfully');
-        // console.log('Response from server is : ', response);
+        callback(response.data);
       }, function errorCallback(response) {
         console.log('ERROR on Put Request!');
       });
@@ -81,4 +84,49 @@ myApp
     return {
       updateWait: updateWait
     };
+  }).factory('WaitOps', function() {
+
+
+    var getLatest = function(wait) {
+      var latest = wait.length-1;
+      return wait[latest].waitColor;
+    };
+
+    var getTimestamp = function(wait) {
+      var latest = wait.length-1;
+      var date = moment(wait[latest].timestamp);
+      return date.fromNow();
+    };
+
+    var getSlicedTime = function(timestamp) {
+      var t = moment(timestamp).format("ddd, MMM Do, h:mm a");
+      return t;
+    };
+
+    var getWaitColor = function(color) {
+      var resultColor = "";
+      switch(color) {
+        case "0_green":
+          resultColor = "#5cb85c";
+          break;
+        case "1_yellow":
+          resultColor = "#f0ad4e";
+          break;
+        case "2_red":
+          resultColor = "#d9534f";
+          break;
+        case "3_grey":
+          resultColor = "#cccccc";
+          break;
+      }
+      return resultColor;
+    };
+
+    return {
+      getLatest: getLatest,
+      getTimestamp: getTimestamp,
+      getSlicedTime: getSlicedTime,
+      getWaitColor: getWaitColor
+    };
   });
+

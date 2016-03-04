@@ -28,10 +28,23 @@
     <div class="row">
       <ul class="list-group">
         <!-- Currently hardcoded directions originating from Makersquare -->
-        <li class="list-group-item"><a class="restDetails" target="_blank" ng-href="https://www.google.com/maps/dir/604+Arizona+Ave+Santa+Monica/{{restaurant.address}}">{{ restaurant.address }}</a></li>
-        <li class="list-group-item"><h2 class="restDetails">Estimated Wait Time is {{ waitString }}</h2></li>
+        <li class="list-group-item"><a class="restDetails" target="_blank" ng-href="https://www.google.com/maps/dir/{{loc.lat}},{{loc.long}}/{{restaurant.address}}">{{ restaurant.address }}</a></li>
+        <li class="list-group-item">
+          <h2 class="restDetails">
+            Estimated Wait Time is {{ waitString }}.  Last updated {{ timestamp }}
+          </h2>
+        </li>
         <li class="list-group-item"><div id="currWait"></div></li>
       </ul>
+    </div>
+
+    <p id="timeline-title">Timeline</p>
+    <div id="timeline">
+      <div id="timeline-2">
+        <div class="timeline-elt" ng-repeat="wait in restaurant.waitArr | reverse" ng-style="{'background-color': getWaitColor(wait.waitColor)}">
+          {{ getSlicedTime(wait.timestamp) }}
+        </div>
+      </div>
     </div>
 
     <!-- Wait Time -->

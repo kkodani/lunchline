@@ -1,5 +1,5 @@
 // Controller for the main home list view
-myApp.controller('listCtrl', function(distance, Data, $scope) {
+myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
   $scope.data = [];
   $scope.userLocation = {};
 
@@ -10,10 +10,22 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
     sessionStorage["tempStorage"] = JSON.stringify(obj);
   }
 
-  // Order variable used for the sorting order
+   // Order variable used for the sorting order
   $scope.order = function(predicate) {
     $scope.predicate = predicate;
     $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+  };
+
+  $scope.orderByWait = function() {
+    $scope.predicate = "restaurant.wait[restaurant.wait.length-1].waitColor[0]";
+    $scope.reverse = !$scope.reverse;
+    $scope.data.sort(function(itemA, itemB) {
+      var al = itemA.restaurant.wait.length - 1;
+      var bl = itemB.restaurant.wait.length - 1;
+      var a = parseInt(itemA.restaurant.wait[al].waitColor[0])
+      var b = parseInt(itemB.restaurant.wait[bl].waitColor[0])
+      return b - a;
+    });
   };
 
   // Main function on page load
@@ -59,6 +71,14 @@ myApp.controller('listCtrl', function(distance, Data, $scope) {
         $scope.contentLoading = false;
       });
     }, function(error){console.log(error);}, geoOptions);
+  };
+
+  $scope.getLatestWait = function(wait) {
+    return WaitOps.getLatest(wait);
+  };
+
+  $scope.getTime = function(wait) {
+    return WaitOps.getTimestamp(wait);
   };
 
   // Calls Google API and adds nearby places not yet in database

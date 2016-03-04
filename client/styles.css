@@ -95,7 +95,8 @@ a.list-group-item {
 }
 
 #restViewMap {
-  height: 500px;
+  height: 300px;
+  width: 300px;
   padding: 0px 15px;
 }
 
@@ -131,6 +132,37 @@ a.list-group-item {
 #currWait {
   height: 100px;
   width: 100%;
+}
+
+#timeline-title {
+  margin: 0px 5% 0px 5%;
+  font-size: 26px;
+}
+
+#timeline {
+  margin: 0px 5% 0px 5%;
+  height: 100px;
+  width: 90%;
+  white-space: nowrap;
+  overflow: scroll;
+}
+
+#timeline-2 {
+  margin: 0px 0px 0px 0px;
+}
+
+.timeline-elt {
+  display: inline-block;
+  background-color: red;
+  border: solid 2px;
+  border-color: #e6e6e6;
+  height: 50px;
+  width: 100px;
+  white-space: normal;
+  font-size: 12px;
+  padding: 4px;
+  margin: 2px;
+  font-family: Georgia;
 }
 
 .waitTimeButtons {
@@ -184,6 +216,16 @@ a.list-group-item {
   top: 0;
   bottom: 0;
   margin: auto 20px;
+}
+
+.waitTimestamp {
+  position: absolute;
+  height: 1.5em;
+  right: 10%;
+  top: 0;
+  bottom: 0;
+  margin: auto 20px;
+  font-size: 12px;
 }
 
 .loading {
