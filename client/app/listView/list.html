@@ -14,7 +14,7 @@
     </div>
 
     <!-- List of Restaurants.  Uses Angular Mobile UI classes -->
-    <a ng-repeat="restaurant in data | orderBy:predicate:reverse" ui-sref="restView" ng-click="transferEvent(restaurant.restaurant)" class="list-group-item" ng-show="{{ restaurant.restaurant.open }}">
+    <a ng-repeat="restaurant in data | orderBy:predicate:reverse" ui-sref="restView" ng-click="transferEvent(restaurant.restaurant)" class="list-group-item">
       {{ restaurant.restaurant.dist }}mi - {{ restaurant.restaurant.name }} 
       <span class="waitTimestamp">Last updated: {{ getTime(restaurant.restaurant.wait) }}</span>
       <img class="waitColorDot" ng-src="../../assets/{{ getLatestWait(restaurant.restaurant.wait) }}.png">
