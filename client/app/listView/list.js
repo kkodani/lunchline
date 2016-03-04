@@ -1,15 +1,9 @@
 // Controller for the main home list view
-<<<<<<< 365fc6223ab3b88c25d5806e1888ed6d4cd21ea3
-myApp.controller('listCtrl', function(distance, Data, WaitOps, $scope) {
-  $scope.data = [];
-  $scope.userLocation = {};
-=======
-myApp.controller('listCtrl', function(distance, Data, $scope, Search) {
+myApp.controller('listCtrl', function(distance, Data, $scope, Search, WaitOps) {
    $scope.data = [];
    $scope.userLocation = {};
    $scope.searchResult = {};
    $scope.searchData = {};
->>>>>>> [Feature] Added search bar,works on home, needs to be tested on restView
 
   // Function called when a wait time is reported.  Saves to session storage for refresh/back cases
   // and updates database.
@@ -76,6 +70,7 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search) {
           item.restaurant.open = openNow;
         }
         $scope.data = fetchedData;
+        console.log($scope.data);
         $scope.contentLoading = false;
       });
     }, function(error){console.log(error);}, geoOptions);
@@ -106,10 +101,11 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search) {
      .then(function(result) { 
         $scope.searchResult.restaurant = result;
         var destination = {
-           lat: $scope.searchResult.restaurant.geometry.location.lat,
-           long: $scope.searchResult.restaurant.geometry.location.lng
+           lat: $scope.searchResult.restaurant.loc[1],
+           long: $scope.searchResult.restaurant.loc[0]
         };
         $scope.searchResult.restaurant.dist = distance.calc($scope.userLocation, destination);
+        $scope.searchResult.restaurant.open = $scope.searchResult.restaurant.hours.open_now;
         $scope.data[0] = $scope.searchResult;
         $scope.$root.searchData.searchInput = "";
         Data.clickedItem = $scope.data[0].restaurant;
@@ -117,6 +113,7 @@ myApp.controller('listCtrl', function(distance, Data, $scope, Search) {
      })
      .catch(function (error) {
         console.error(error);
+        alert("Data not available for this location");
      })
   }
 
